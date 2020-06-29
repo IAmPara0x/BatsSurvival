@@ -7,8 +7,9 @@ function Wall(wallImg, windowWidth, windowHeight) {
   this.windowHeight = windowHeight;
   this.wallWidht = wallImg.width;
   this.wallHeight = wallImg.height;
-  this.wallArea = [];
-  // image(this.wallImg, 10, 10);
+  this.wallArea = {};
+
+  let rectCounter = 0;
 
   this.wallDraw = function (
     startingLocation,
@@ -27,10 +28,11 @@ function Wall(wallImg, windowWidth, windowHeight) {
       if (createArea) {
         let [startX, startY] = startingLocation;
         let [endX, endY] = endingLocation;
-        while (startX <= endX) {
-          this.wallArea.push({ X: startX, Y: startY });
-          startX++;
-        }
+        this.wallArea[`reactangle${rectCounter}`] = {
+          length: [startX, endX],
+          breadth: [startY, endY + this.wallHeight],
+        };
+        rectCounter++;
       }
     }
     if (type === "V") {
@@ -41,10 +43,11 @@ function Wall(wallImg, windowWidth, windowHeight) {
       if (createArea) {
         let [startX, startY] = startingLocation;
         let [endX, endY] = endingLocation;
-        while (startY <= endY) {
-          this.wallArea.push({ X: startX, Y: startY });
-          startY++;
-        }
+        this.wallArea[`reactangle${rectCounter}`] = {
+          length: [startX, endX + this.wallWidht],
+          breadth: [startY, endY],
+        };
+        rectCounter++;
       }
     }
   };

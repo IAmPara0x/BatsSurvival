@@ -20,7 +20,7 @@ function preload() {
 function setup() {
   createCanvas(800, 791);
   wall = new Wall(wallImg, 800, 791);
-  wall.wallDraw([0, 0], [800, 100], (type = "H"), true);
+  wall.wallDraw([0, 0], [800, 0], (type = "H"), true);
 
   wall.wallDraw([0, 0], [0, 791], (type = "V"), true);
 
@@ -43,26 +43,24 @@ function setup() {
     (type = "V"),
     true
   );
-  // console.log(wall.wallArea.slice(-10));
+  console.log(wall.wallArea);
   bat = new Bat(batImg, 800, 791, wall.wallArea);
 }
 
 function draw() {
   background(0);
-  image(ghostImg, 150, 150);
 
   bat.drawBat(x, y);
 
   if (ticker === 10) {
     currrentDirection = bat.batDirection();
-    // console.log(currrentDirection);
     ticker = 0;
   }
   [x, y] = bat.batMovement(x, y, currrentDirection);
 
   ticker++;
 
-  wall.wallDraw([0, 0], [800, 100], (type = "H"));
+  wall.wallDraw([0, 0], [800, 0], (type = "H"));
 
   wall.wallDraw([0, 0], [0, 791], (type = "V"));
 
