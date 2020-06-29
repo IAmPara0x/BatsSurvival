@@ -43,13 +43,13 @@ function setup() {
     (type = "V"),
     true
   );
-  console.log(wall.wallArea.slice(-10));
+  // console.log(wall.wallArea.slice(-10));
   bat = new Bat(batImg, 800, 791, wall.wallArea);
 }
 
 function draw() {
   background(0);
-  // image(ghostImg, 150, 150);
+  image(ghostImg, 150, 150);
 
   bat.drawBat(x, y);
 
