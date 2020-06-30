@@ -6,10 +6,10 @@ let wallImg;
 let wall;
 let bat;
 
-let x = 100;
-let y = 100;
+let x = 700;
+let y = 575;
 let ticker = 10;
-let currrentDirection = "DOWN";
+let currrentDirection = "LEFT";
 
 function preload() {
   batImg = loadImage("assests/bat.png");
@@ -43,7 +43,10 @@ function setup() {
     (type = "V"),
     true
   );
-  console.log(wall.wallArea);
+  wall.wallDraw([500, 300], [500, 600], (type = "V"), true);
+  wall.wallDraw([300, 50], [300, 450], (type = "V"), true);
+  wall.wallDraw([300, 500], [300, 700], (type = "V"), true);
+
   bat = new Bat(batImg, 800, 791, wall.wallArea);
 }
 
@@ -52,11 +55,21 @@ function draw() {
 
   bat.drawBat(x, y);
 
-  if (ticker === 10) {
+  if (ticker === 20) {
     currrentDirection = bat.batDirection();
     ticker = 0;
   }
-  [x, y] = bat.batMovement(x, y, currrentDirection);
+  if (ticker % 1 === 0) {
+    if (currrentDirection === "RIGHT") {
+      [x, y] = bat.batMovement(x + bat.batWidth, y, currrentDirection);
+      x -= bat.batWidth;
+    } else if (currrentDirection === "DOWN") {
+      [x, y] = bat.batMovement(x, y + bat.batHeight, currrentDirection);
+      y -= bat.batHeight;
+    } else {
+      [x, y] = bat.batMovement(x, y, currrentDirection);
+    }
+  }
 
   ticker++;
 
@@ -80,4 +93,8 @@ function draw() {
     [800 - wallImg.width, 791],
     (type = "V")
   );
+
+  wall.wallDraw([500, 300], [500, 600], (type = "V"), true);
+  wall.wallDraw([300, 50], [300, 450], (type = "V"), true);
+  wall.wallDraw([300, 500], [300, 700], (type = "V"), true);
 }

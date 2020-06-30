@@ -31,6 +31,7 @@ function Wall(wallImg, windowWidth, windowHeight) {
         this.wallArea[`reactangle${rectCounter}`] = {
           length: [startX, endX],
           breadth: [startY, endY + this.wallHeight],
+          type: type,
         };
         rectCounter++;
       }
@@ -46,6 +47,7 @@ function Wall(wallImg, windowWidth, windowHeight) {
         this.wallArea[`reactangle${rectCounter}`] = {
           length: [startX, endX + this.wallWidht],
           breadth: [startY, endY],
+          type: type,
         };
         rectCounter++;
       }
