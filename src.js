@@ -6,10 +6,10 @@ let wallImg;
 let wall;
 let bat;
 
-let x = 700;
-let y = 575;
+let x = 50;
+let y = 50;
 let ticker = 10;
-let currrentDirection = "LEFT";
+let currrentDirection = "RIGHT";
 
 function preload() {
   batImg = loadImage("assests/bat.png");
@@ -47,7 +47,7 @@ function setup() {
   wall.wallDraw([300, 50], [300, 450], (type = "V"), true);
   wall.wallDraw([300, 500], [300, 700], (type = "V"), true);
 
-  bat = new Bat(batImg, 800, 791, wall.wallArea);
+  bat = new Bat(batImg, 800, 791, wall.wallArea, 50);
 }
 
 function draw() {
@@ -56,7 +56,11 @@ function draw() {
   bat.drawBat(x, y);
 
   if (ticker === 20) {
-    currrentDirection = bat.batDirection();
+    if (bat.dna.length !== 0) {
+      currrentDirection = bat.dna.shift();
+    } else {
+      currrentDirection = "STOP";
+    }
     ticker = 0;
   }
   if (ticker % 1 === 0) {
@@ -66,8 +70,10 @@ function draw() {
     } else if (currrentDirection === "DOWN") {
       [x, y] = bat.batMovement(x, y + bat.batHeight, currrentDirection);
       y -= bat.batHeight;
-    } else {
+    } else if (currrentDirection !== "STOP") {
       [x, y] = bat.batMovement(x, y, currrentDirection);
+    } else {
+      // console.log(bat.fitness(790, 275));
     }
   }
 
