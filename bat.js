@@ -1,24 +1,33 @@
 /* eslint no-undef: 0 */
 /* eslint-disable no-unused-vars */
-function Bat(batImg, windowWidth, windowHeight, wallArea, dnaLength) {
+function Bat(
+  batImg,
+  initialX,
+  initialY,
+  windowWidth,
+  windowHeight,
+  wallArea,
+  dnaLength
+) {
   this.batImg = batImg;
   this.batWidth = batImg.width;
   this.batHeight = batImg.height;
   this.windowWidth = windowWidth;
   this.windowHeight = windowHeight;
   this.wallArea = wallArea;
-  this.direction = ["UP", "DOWN", "RIGHT", "LEFT"];
+  this.directionOptions = ["UP", "DOWN", "RIGHT", "LEFT"];
   this.dnaLength = dnaLength;
   this.dna = [];
-  this.x, this.y;
+  (this.x = initialX), (this.y = initialY);
+  this.direction = "RIGHT";
 
-  this.drawBat = function (x, y) {
-    image(this.batImg, x, y);
+  this.drawBat = function () {
+    image(this.batImg, this.x, this.y);
   };
 
   this.batDirection = function () {
-    let Currentdirection = this.direction[
-      Math.floor(Math.random() * this.direction.length)
+    let Currentdirection = this.directionOptions[
+      Math.floor(Math.random() * this.directionOptions.length)
     ];
     return Currentdirection;
   };
@@ -27,43 +36,50 @@ function Bat(batImg, windowWidth, windowHeight, wallArea, dnaLength) {
     this.dna.push(this.batDirection());
   }
 
-  this.batMovement = function (x, y, direction) {
+  this.batMovement = function () {
+    if (this.direction === "STOP") {
+      // console.log("I AM DYING");
+    }
+
+    if (this.direction === "RIGHT") {
+      this.x += this.batWidth;
+    }
+    if (this.direction === "DOWN") {
+      this.y -= bat.batHeight;
+    }
+
     var rectangles = Object.keys(this.wallArea);
     var isMovementAllowed = true;
 
     rectangles.forEach((rectangle) => {
       var rect = this.wallArea[rectangle];
-      if (rect.length[0] <= x && x <= rect.length[1]) {
-        if (rect.breadth[0] <= y && y <= rect.breadth[1]) {
+      if (rect.length[0] <= this.x && this.x <= rect.length[1]) {
+        if (rect.breadth[0] <= this.y && this.y <= rect.breadth[1]) {
           isMovementAllowed = false;
         }
       }
     });
     if (isMovementAllowed) {
-      if (direction === "UP") {
-        this.x = x;
-        this.y = y - 4;
-        return [x, y - 4];
+      if (this.direction === "UP") {
+        this.y -= 4;
       }
-      if (direction === "DOWN") {
-        this.x = x;
-        this.y = y + 4;
-        return [x, y + 4];
+      if (this.direction === "DOWN") {
+        this.y += 4;
+        this.y += this.batHeight;
       }
-      if (direction === "RIGHT") {
-        this.x = x + 4;
-        this.y = y;
-        return [x + 4, y];
+      if (this.direction === "RIGHT") {
+        this.x += 4;
+        this.x -= this.batWidth;
       }
-      if (direction === "LEFT") {
-        this.x = x - 4;
-        this.y = y;
-        return [x - 4, y];
+      if (this.direction === "LEFT") {
+        this.x -= 4;
       }
-    } else {
-      this.x = x;
-      this.y = y;
-      return [x, y];
+    }
+    if (!isMovementAllowed && this.direction === "RIGHT") {
+      this.x -= this.batWidth;
+    }
+    if (!isMovementAllowed && this.direction === "DOWN") {
+      this.y += this.batHeight;
     }
   };
 

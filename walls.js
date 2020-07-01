@@ -53,4 +53,33 @@ function Wall(wallImg, windowWidth, windowHeight) {
       }
     }
   };
+
+  this.drawAllWalls = function (createArea = false) {
+    this.wallDraw([0, 0], [800, 0], (type = "H"), createArea);
+
+    this.wallDraw([0, 0], [0, 791], (type = "V"), createArea);
+
+    this.wallDraw(
+      [0, 791 - wallImg.height],
+      [800, 791 - wallImg.height],
+      (type = "H"),
+      createArea
+    );
+
+    this.wallDraw(
+      [800 - wallImg.width, 0],
+      [800 - wallImg.width, 250],
+      (type = "V"),
+      createArea
+    );
+    this.wallDraw(
+      [800 - wallImg.width, 300],
+      [800 - wallImg.width, 791],
+      (type = "V"),
+      createArea
+    );
+    this.wallDraw([500, 300], [500, 600], (type = "V"), createArea);
+    this.wallDraw([300, 50], [300, 450], (type = "V"), createArea);
+    this.wallDraw([300, 500], [300, 700], (type = "V"), createArea);
+  };
 }
