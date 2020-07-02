@@ -1,5 +1,8 @@
 /* eslint no-undef: 0 */
 /* eslint-disable no-unused-vars */
+
+// FIXME: problem with bat hitting the upperwall and getting stuck. Happend After recfractoring.
+
 function Bat(
   batImg,
   initialX,
@@ -20,6 +23,7 @@ function Bat(
   this.dna = [];
   (this.x = initialX), (this.y = initialY);
   this.direction = "RIGHT";
+  this.killed = false;
 
   this.drawBat = function () {
     image(this.batImg, this.x, this.y);
@@ -45,17 +49,18 @@ function Bat(
       this.x += this.batWidth;
     }
     if (this.direction === "DOWN") {
-      this.y -= bat.batHeight;
+      this.y -= this.batHeight;
     }
 
-    var rectangles = Object.keys(this.wallArea);
-    var isMovementAllowed = true;
+    let rectangles = Object.keys(this.wallArea);
+    let isMovementAllowed = true;
 
     rectangles.forEach((rectangle) => {
-      var rect = this.wallArea[rectangle];
+      let rect = this.wallArea[rectangle];
       if (rect.length[0] <= this.x && this.x <= rect.length[1]) {
         if (rect.breadth[0] <= this.y && this.y <= rect.breadth[1]) {
           isMovementAllowed = false;
+          this.killed = true;
         }
       }
     });
@@ -84,7 +89,7 @@ function Bat(
   };
 
   this.fitness = function (goalX, goalY) {
-    var dist = Math.sqrt((goalX - this.x) ** 2 + (goalY - this.y) ** 2);
+    let dist = Math.sqrt((goalX - this.x) ** 2 + (goalY - this.y) ** 2);
     return dist;
   };
 }

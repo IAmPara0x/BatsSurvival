@@ -80,6 +80,5 @@ function Wall(wallImg, windowWidth, windowHeight) {
     );
     this.wallDraw([500, 300], [500, 600], (type = "V"), createArea);
     this.wallDraw([300, 50], [300, 450], (type = "V"), createArea);
-    this.wallDraw([300, 500], [300, 700], (type = "V"), createArea);
   };
 }
