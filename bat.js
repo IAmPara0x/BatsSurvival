@@ -1,22 +1,10 @@
 /* eslint no-undef: 0 */
 /* eslint-disable no-unused-vars */
 
-// FIXME: problem with bat hitting the upperwall and getting stuck. Happend After recfractoring.
-
-function Bat(
-  batImg,
-  initialX,
-  initialY,
-  windowWidth,
-  windowHeight,
-  wallArea,
-  dnaLength
-) {
+function Bat(batImg, initialX, initialY, wallArea, dnaLength) {
   this.batImg = batImg;
   this.batWidth = batImg.width;
   this.batHeight = batImg.height;
-  this.windowWidth = windowWidth;
-  this.windowHeight = windowHeight;
   this.wallArea = wallArea;
   this.directionOptions = ["UP", "DOWN", "RIGHT", "LEFT"];
   this.dnaLength = dnaLength;
@@ -24,6 +12,7 @@ function Bat(
   (this.x = initialX), (this.y = initialY);
   this.direction = "RIGHT";
   this.killed = false;
+  this.bestFitness = { distance: Infinity, dnaLength: Infinity };
 
   this.drawBat = function () {
     image(this.batImg, this.x, this.y);
@@ -40,7 +29,7 @@ function Bat(
     this.dna.push(this.batDirection());
   }
 
-  this.batMovement = function () {
+  this.batCheckValidMove = function () {
     if (this.direction === "STOP") {
       // console.log("I AM DYING");
     }
@@ -64,6 +53,7 @@ function Bat(
         }
       }
     });
+
     if (isMovementAllowed) {
       if (this.direction === "UP") {
         this.y -= 4;
@@ -89,7 +79,10 @@ function Bat(
   };
 
   this.fitness = function (goalX, goalY) {
-    let dist = Math.sqrt((goalX - this.x) ** 2 + (goalY - this.y) ** 2);
-    return dist;
+    let distance = Math.sqrt((goalX - this.x) ** 2 + (goalY - this.y) ** 2);
+    if (distance < this.bestFitness.distance) {
+      this.bestFitness.distance = distance;
+      this.bestFitness.dnaLength = this.dnaLength - this.dna.length;
+    }
   };
 }
