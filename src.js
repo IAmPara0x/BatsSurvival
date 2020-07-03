@@ -27,14 +27,17 @@ function setup() {
   createCanvas(800, 791);
   wall = new Wall(wallImg, 800, 791);
   wall.drawAllWalls((createArea = true));
-  geneticAlgo = new GeneticAlgo(50);
-  geneticAlgo.createPopulation();
+  geneticAlgo = new GeneticAlgo(100);
+  geneticAlgo.createPopulation((reproduce = false));
 }
 
 function draw() {
   background(0);
 
   geneticAlgo.populationMovement();
+  if (geneticAlgo.population.length === 0) {
+    geneticAlgo.createPopulation((reproduce = true));
+  }
 
   ticker++;
   wall.drawAllWalls((createArea = false));

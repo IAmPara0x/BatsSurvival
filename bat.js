@@ -1,7 +1,14 @@
 /* eslint no-undef: 0 */
 /* eslint-disable no-unused-vars */
 
-function Bat(batImg, initialX, initialY, wallArea, dnaLength) {
+function Bat(
+  batImg,
+  initialX,
+  initialY,
+  wallArea,
+  dnaLength,
+  isChildren = false
+) {
   this.batImg = batImg;
   this.batWidth = batImg.width;
   this.batHeight = batImg.height;
@@ -13,6 +20,10 @@ function Bat(batImg, initialX, initialY, wallArea, dnaLength) {
   this.direction = "RIGHT";
   this.killed = false;
   this.bestFitness = { distance: Infinity, dnaLength: Infinity };
+  this.selectionPobability;
+  this.totalDistance = Math.sqrt((goalX - this.x) ** 2 + (goalY - this.y) ** 2);
+  this.isChildren = isChildren;
+  this.currentDnaPos = 0;
 
   this.drawBat = function () {
     image(this.batImg, this.x, this.y);
@@ -25,8 +36,10 @@ function Bat(batImg, initialX, initialY, wallArea, dnaLength) {
     return Currentdirection;
   };
 
-  for (let i = 0; i < this.dnaLength; i++) {
-    this.dna.push(this.batDirection());
+  if (!this.isChildren) {
+    for (let i = 0; i < this.dnaLength; i++) {
+      this.dna.push(this.batDirection());
+    }
   }
 
   this.batCheckValidMove = function () {
@@ -84,5 +97,7 @@ function Bat(batImg, initialX, initialY, wallArea, dnaLength) {
       this.bestFitness.distance = distance;
       this.bestFitness.dnaLength = this.dnaLength - this.dna.length;
     }
+    this.selectionPobability =
+      1 - this.bestFitness.distance / this.totalDistance;
   };
 }
