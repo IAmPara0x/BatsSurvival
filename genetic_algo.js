@@ -11,39 +11,53 @@ class GeneticAlgo {
   }
   createPopulation(reproduce = false) {
     if (reproduce) {
-      let probSumExp = 0;
+      let tempBats = [];
       let childrenBats = [];
       this.deadPopulation.forEach((bat) => {
-        bat.selectionPobability = exp(-bat.selectionPobability);
-        probSumExp += bat.selectionPobability;
+        bat.selectionProbability *= bat.survivalProbability;
+        bat.selectionProbability = bat.selectionProbability.toFixed(2);
       });
+
       this.deadPopulation.forEach((bat) => {
-        bat.selectionPobability = +(
-          bat.selectionPobability / probSumExp
-        ).toFixed(2);
-      });
-      this.deadPopulation.forEach((bat) => {
-        let numBats = bat.selectionPobability * 100;
-        while (numBats > 0) {
+        let numBat = bat.selectionProbability * 100;
+        while (numBat > 0) {
           tempBats.push(bat);
-          numBats--;
+          numBat--;
         }
       });
-      console.log(tempBats.length);
-      for (let i = 0; i < this.populationSize; i++) {
-        let parent1 = tempBats[Math.floor(Math.random() * tempBats.length)];
-        let parent2 = tempBats[Math.floor(Math.random() * tempBats.length)];
 
-        let children = new Bat(batImg, 50, 350, wall.wallArea, 100, true);
-        children.dna = [].concat(
-          parent1.dna.slice(0, 51),
-          parent2.dna.slice(51)
-        );
-        childrenBats.push(children);
+      for (let i = 0; i < this.populationSize; i++) {
+        let index1 = Math.floor(Math.random() * tempBats.length);
+        let index2 = Math.floor(Math.random() * tempBats.length);
+        let parent1 = tempBats[index1];
+        let parent2 = tempBats[index2];
+        while (index1 === index2) {
+          index2 = Math.floor(Math.random() * tempBats.length);
+          parent2 = tempBats[index2];
+        }
+        let childBat = new Bat(batImg, 50, 350, wall.wallArea, 100, true);
+
+        if (this.mutationRate >= random(0, 1)) {
+          childBat.dna = [].concat(
+            parent1.dna.slice(0, 41),
+            parent2.dna.slice(51)
+          );
+          while (childBat.dna.length !== childBat.dnaLength) {
+            childBat.dna.push(childBat.batDirection());
+          }
+        } else {
+          childBat.dna = [].concat(
+            parent1.dna.slice(0, 51),
+            parent2.dna.slice(51)
+          );
+        }
+        childrenBats.push(childBat);
       }
-      this.population = childrenBats;
+      console.log(childrenBats[0].dna.length);
       this.deadPopulation = [];
       tempBats = [];
+      this.population = childrenBats;
+      childrenBats = [];
     } else {
       for (let i = 0; i < this.populationSize; i++) {
         this.population.push(new Bat(batImg, 50, 350, wall.wallArea, 100));
@@ -62,6 +76,7 @@ class GeneticAlgo {
           bat.currentDnaPos += 1;
         } else {
           bat.killed = true;
+          bat.survivalProbability = bat.currentDnaPos / bat.dnaLength;
         }
       }
       if (ticker % 1 === 0) {

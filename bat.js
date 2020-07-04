@@ -20,10 +20,11 @@ function Bat(
   this.direction = "RIGHT";
   this.killed = false;
   this.bestFitness = { distance: Infinity, dnaLength: Infinity };
-  this.selectionPobability;
+  this.selectionProbability;
   this.totalDistance = Math.sqrt((goalX - this.x) ** 2 + (goalY - this.y) ** 2);
   this.isChildren = isChildren;
   this.currentDnaPos = 0;
+  this.survivalProbability;
 
   this.drawBat = function () {
     image(this.batImg, this.x, this.y);
@@ -63,6 +64,7 @@ function Bat(
         if (rect.breadth[0] <= this.y && this.y <= rect.breadth[1]) {
           isMovementAllowed = false;
           this.killed = true;
+          this.survivalProbability = this.currentDnaPos / this.dnaLength;
         }
       }
     });
@@ -97,7 +99,7 @@ function Bat(
       this.bestFitness.distance = distance;
       this.bestFitness.dnaLength = this.dnaLength - this.dna.length;
     }
-    this.selectionPobability =
+    this.selectionProbability =
       1 - this.bestFitness.distance / this.totalDistance;
   };
 }
