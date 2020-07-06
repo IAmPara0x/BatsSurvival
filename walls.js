@@ -73,10 +73,11 @@ function Wall(wallImg, windowWidth, windowHeight) {
       createArea
     );
     this.wallDraw(
-      [800 - wallImg.width, 300],
+      [800 - wallImg.width, 350],
       [800 - wallImg.width, 791],
       (type = "V"),
       createArea
     );
+    this.wallDraw([500, 100], [500, 500], (type = "V"), createArea);
   };
 }

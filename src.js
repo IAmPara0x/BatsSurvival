@@ -2,11 +2,13 @@
 /* eslint-disable no-unused-vars */
 let batImg;
 let ghostImg;
+let ghost;
 let wallImg;
 let wall;
 let geneticAlgo;
 const goalX = 790,
   goalY = 275;
+let inconsolata;
 
 let ticker = 0;
 const population = 50;
@@ -21,6 +23,7 @@ function preload() {
   for (let i = 0; i < numExplosionImages; i++) {
     explosionImages.push(loadImage(`/assests/explosion${i + 1}.png`));
   }
+  inconsolata = loadFont("assests/Inconsolata-Bold.ttf");
 }
 
 function setup() {
@@ -29,6 +32,11 @@ function setup() {
   wall.drawAllWalls((createArea = true));
   geneticAlgo = new GeneticAlgo(100);
   geneticAlgo.createPopulation((reproduce = false));
+  ghost = new Ghost(ghostImg, 750, 500, wall.wallArea, 100);
+
+  textFont(inconsolata);
+  textSize(22);
+  textAlign(CENTER, CENTER);
 }
 
 function draw() {
