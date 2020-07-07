@@ -2,7 +2,6 @@
 /* eslint-disable no-unused-vars */
 let batImg;
 let ghostImg;
-let ghost;
 let wallImg;
 let wall;
 let geneticAlgo;
@@ -30,9 +29,8 @@ function setup() {
   createCanvas(800, 791);
   wall = new Wall(wallImg, 800, 791);
   wall.drawAllWalls((createArea = true));
-  geneticAlgo = new GeneticAlgo(100);
+  geneticAlgo = new GeneticAlgo(100, 15);
   geneticAlgo.createPopulation((reproduce = false));
-  ghost = new Ghost(ghostImg, 750, 500, wall.wallArea, 100);
 
   textFont(inconsolata);
   textSize(22);
@@ -43,7 +41,7 @@ function draw() {
   background(0);
 
   geneticAlgo.populationMovement();
-  if (geneticAlgo.population.length === 0) {
+  if (geneticAlgo.aliveBatPopulation.length === 0) {
     geneticAlgo.createPopulation((reproduce = true));
   }
 

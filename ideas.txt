@@ -1,0 +1,1 @@
+The fitness function of ghost will be such that the what's the average distance that the ghost was from the goal means after every move calculate the distance of ghost from the goal and after the end o f dna  length calculate the average of those distance the ghosts with less average distance from the goal will be the fittest one.
